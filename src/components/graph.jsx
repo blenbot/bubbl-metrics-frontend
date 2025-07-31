@@ -11,6 +11,7 @@ import {
   Filler
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { metricsAPI } from '../services/api';
 
 ChartJS.register(
   CategoryScale,
@@ -22,8 +23,6 @@ ChartJS.register(
   Legend,
   Filler
 );
-
-const API_BASE_URL = 'http://localhost:8080';
 
 export default function UserActivityChart({ days = 30 }) {
   const [chartData, setChartData] = useState(null);
@@ -45,13 +44,12 @@ export default function UserActivityChart({ days = 30 }) {
       
       const formatDate = (date) => date.toISOString().split('T')[0];
       
-      const response = await fetch(
-        `${API_BASE_URL}/metrics/by-date-range?start_date=${formatDate(startDate)}&end_date=${formatDate(endDate)}`
+      // Use the API service instead of direct fetch
+      const data = await metricsAPI.getMetricsByDateRange(
+        formatDate(startDate), 
+        formatDate(endDate)
       );
       
-      if (!response.ok) throw new Error('Failed to fetch chart data');
-      
-      const data = await response.json();
       const metrics = data.metrics || [];
       
       const labels = metrics.map(item => {
@@ -61,7 +59,6 @@ export default function UserActivityChart({ days = 30 }) {
       
       const activeUsers = metrics.map(item => item.active_users || 0);
       const newUsers = metrics.map(item => item.new_users || 0);
-      const messages = metrics.map(item => item.messages || 0);
       
       setChartData({
         labels,
@@ -230,10 +227,7 @@ export function MessageChart({ days = 30 }) {
     try {
       setLoading(true);
       
-      const response = await fetch(`${API_BASE_URL}/metrics/messages/history?days=${days}`);
-      if (!response.ok) throw new Error('Failed to fetch message data');
-      
-      const data = await response.json();
+      const data = await metricsAPI.getMessageHistory(days);
       const history = data.daily_message_history || {};
       
       const sortedDates = Object.keys(history).sort();
