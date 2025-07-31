@@ -43,6 +43,18 @@ export const metricsAPI = {
     return response.json();
   },
 
+  async getMetricsByDateRange(startDate, endDate) {
+    const response = await fetch(`${API_BASE_URL}/metrics/by-date-range?start_date=${startDate}&end_date=${endDate}`);
+    if (!response.ok) throw new Error('Failed to fetch date range metrics');
+    return response.json();
+  },
+
+  async getMessageHistory(days = 30) {
+    const response = await fetch(`${API_BASE_URL}/metrics/messages/history?days=${days}`);
+    if (!response.ok) throw new Error('Failed to fetch message history');
+    return response.json();
+  },
+
   async getAllMetrics() {
     try {
       const [
