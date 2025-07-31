@@ -37,20 +37,29 @@ export default function UserActivityChart({ days = 30 }) {
     try {
       setLoading(true);
       
-      // Calculate date range
       const endDate = new Date();
       const startDate = new Date();
-      startDate.setDate(startDate.getDate() - days);
+      startDate.setDate(endDate.getDate() - days);
       
       const formatDate = (date) => date.toISOString().split('T')[0];
       
-      // Use the API service instead of direct fetch
+      console.log(`Fetching data from ${formatDate(startDate)} to ${formatDate(endDate)}`);
+      
       const data = await metricsAPI.getMetricsByDateRange(
         formatDate(startDate), 
         formatDate(endDate)
       );
       
       const metrics = data.metrics || [];
+      
+      console.log('API Response:', data);
+      console.log('Metrics array:', metrics);
+      
+      if (metrics.length === 0) {
+        console.warn('No metrics data returned from API');
+        setError('No data available for the selected period');
+        return;
+      }
       
       const labels = metrics.map(item => {
         const date = new Date(item.date);
@@ -96,7 +105,7 @@ export default function UserActivityChart({ days = 30 }) {
       
       setError(null);
     } catch (err) {
-      setError('Failed to load chart data');
+      setError(`Failed to load chart data: ${err.message}`);
       console.error('Chart error:', err);
     } finally {
       setLoading(false);
