@@ -88,5 +88,41 @@ export const metricsAPI = {
       console.error('Error fetching metrics:', error);
       throw error;
     }
+  },
+
+  // Rewards API endpoints
+  async generateRewardsCSV() {
+    const response = await fetch(`${API_BASE_URL}/rewards/sheet/csv`);
+    if (!response.ok) throw new Error('Failed to generate CSV');
+    
+    // Get the CSV blob
+    const blob = await response.blob();
+    return blob;
+  },
+
+  async createGoogleSheet() {
+    const response = await fetch(`${API_BASE_URL}/rewards/sheet/google`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    if (!response.ok) throw new Error('Failed to create Google Sheet');
+    return response.json();
+  },
+
+  async markAmbassadorPaid(phoneNumber, note) {
+    const response = await fetch(`${API_BASE_URL}/rewards/mark-paid`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        phone_number: phoneNumber,
+        note: note
+      })
+    });
+    if (!response.ok) throw new Error('Failed to mark ambassador as paid');
+    return response.json();
   }
 };
