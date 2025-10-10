@@ -101,11 +101,9 @@ export const metricsAPI = {
   },
 
   async updateGoogleSheet() {
+    // Changed from POST to GET
     const response = await fetch(`${API_BASE_URL}/rewards/sheet/google`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      }
+      method: 'GET'
     });
     if (!response.ok) throw new Error('Failed to update Google Sheet');
     return response.json();
