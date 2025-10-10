@@ -110,15 +110,13 @@ export const metricsAPI = {
   },
 
   async markAmbassadorPaid(phoneNumber, note) {
-    const response = await fetch(`${API_BASE_URL}/rewards/mark-paid`, {
+    // Send phone as query parameter, not in body
+    const response = await fetch(`${API_BASE_URL}/rewards/mark-paid?phone=${encodeURIComponent(phoneNumber)}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        phone_number: phoneNumber,
-        note: note
-      })
+      }
+      // No body needed since backend only uses query parameter
     });
     if (!response.ok) throw new Error('Failed to mark ambassador as paid');
     return response.json();
