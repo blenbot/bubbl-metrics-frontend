@@ -100,14 +100,14 @@ export const metricsAPI = {
     return blob;
   },
 
-  async createGoogleSheet() {
+  async updateGoogleSheet() {
     const response = await fetch(`${API_BASE_URL}/rewards/sheet/google`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       }
     });
-    if (!response.ok) throw new Error('Failed to create Google Sheet');
+    if (!response.ok) throw new Error('Failed to update Google Sheet');
     return response.json();
   },
 

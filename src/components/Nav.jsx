@@ -31,20 +31,20 @@ export default function Nav() {
         }
     };
 
-    const handleCreateGoogleSheet = async () => {
+    const handleUpdateGoogleSheet = async () => {
         try {
             setLoading(true);
-            const result = await metricsAPI.createGoogleSheet();
+            const result = await metricsAPI.updateGoogleSheet();
             
             if (result.sheet_url) {
                 window.open(result.sheet_url, '_blank');
-                alert('✅ Google Sheet created successfully!');
+                alert('✅ Google Sheet updated successfully!');
             } else {
-                alert('✅ Google Sheet created but no URL returned');
+                alert('✅ Google Sheet updated!');
             }
         } catch (error) {
-            console.error('Error creating Google Sheet:', error);
-            alert('❌ Failed to create Google Sheet: ' + error.message);
+            console.error('Error updating Google Sheet:', error);
+            alert('❌ Failed to update Google Sheet: ' + error.message);
         } finally {
             setLoading(false);
         }
@@ -70,12 +70,12 @@ export default function Nav() {
                         </button>
                         
                         <button
-                            onClick={handleCreateGoogleSheet}
+                            onClick={handleUpdateGoogleSheet}
                             disabled={loading}
                             className='px-4 py-2 bg-white text-orange-500 rounded-lg font-semibold hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2'
                         >
                             <span>📊</span>
-                            <span className='hidden md:inline'>Create Sheet</span>
+                            <span className='hidden md:inline'>Update Sheet</span>
                         </button>
                         
                         <button
