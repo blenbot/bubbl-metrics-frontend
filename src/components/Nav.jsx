@@ -50,6 +50,25 @@ export default function Nav() {
         }
     };
 
+    const handleUpdatePublicGoogleSheet = async () => {
+        try {
+            setLoading(true);
+            const result = await metricsAPI.updatePublicGoogleSheet();
+            
+            if (result.sheet_url) {
+                window.open(result.sheet_url, '_blank');
+                alert('✅ Public Google Sheet updated successfully!');
+            } else {
+                alert('✅ Public Google Sheet updated!');
+            }
+        } catch (error) {
+            console.error('Error updating Public Google Sheet:', error);
+            alert('❌ Failed to update Public Google Sheet: ' + error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <>
             <nav className='z-15 fixed top-10 left-15 right-15 shadow-md bg-orange-400 rounded-xl py-3 px-6 md:px-8 lg:px-12 font-white font-[700]'>
@@ -76,6 +95,15 @@ export default function Nav() {
                         >
                             <span>📊</span>
                             <span className='hidden md:inline'>Update Sheet</span>
+                        </button>
+                        
+                        <button
+                            onClick={handleUpdatePublicGoogleSheet}
+                            disabled={loading}
+                            className='px-4 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2'
+                        >
+                            <span>🌐</span>
+                            <span className='hidden md:inline'>Public Sheet</span>
                         </button>
                         
                         <button

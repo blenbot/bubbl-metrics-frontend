@@ -109,6 +109,14 @@ export const metricsAPI = {
     return response.json();
   },
 
+  async updatePublicGoogleSheet() {
+    const response = await fetch(`${API_BASE_URL}/rewards/sheet/google/public`, {
+      method: 'GET'
+    });
+    if (!response.ok) throw new Error('Failed to update Public Google Sheet');
+    return response.json();
+  },
+
   async markAmbassadorPaid(phoneNumber, note) {
     // Send phone as query parameter, not in body
     const response = await fetch(`${API_BASE_URL}/rewards/mark-paid?phone=${encodeURIComponent(phoneNumber)}`, {
