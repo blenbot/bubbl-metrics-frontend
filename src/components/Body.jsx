@@ -34,7 +34,7 @@ export default function Body() {
 
         fetchMetrics();
         
-        const interval = setInterval(fetchMetrics, 30000);
+        const interval = setInterval(fetchMetrics, 3600000);
         
         return () => clearInterval(interval);
     }, []);
