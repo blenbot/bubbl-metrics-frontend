@@ -77,9 +77,11 @@ export const metricsAPI = {
 
       return {
         totalUsers: totalUsers.total_users,
+        usersBreakdown: totalUsers.breakdown || null,
         activeUsers: activeUsers.active_users,
         userRetention: userRetention.retention_rate,
         totalGroups: totalGroups.total_groups,
+        groupsBreakdown: totalGroups.breakdown || null,
         activeGroups: activeGroups.active_groups,
         totalMessages: totalMessages.total_messages,
         dailyMessages: dailyMessages.daily_messages

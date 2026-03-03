@@ -6,9 +6,11 @@ import '../index.css';
 export default function Body() {
     const [metrics, setMetrics] = useState({
         totalUsers: 0,
+        usersBreakdown: null,
         activeUsers: 0,
         userRetention: 0,
         totalGroups: 0,
+        groupsBreakdown: null,
         activeGroups: 0,
         totalMessages: 0,
         dailyMessages: 0
@@ -82,6 +84,7 @@ export default function Body() {
                     value={metrics.totalUsers} 
                     bgColor="bg-blue-300"
                     icon="👥"
+                    breakdown={metrics.usersBreakdown}
                 />
                 <MetricCard 
                     title="Active Users (7 days)" 
@@ -94,6 +97,7 @@ export default function Body() {
                     value={metrics.totalGroups} 
                     bgColor="bg-yellow-300"
                     icon="💬"
+                    breakdown={metrics.groupsBreakdown}
                 />
                 <MetricCard 
                     title="Messages Today" 
@@ -138,7 +142,14 @@ export default function Body() {
     );
 }
 
-function MetricCard({ title, value, bgColor, icon }) {
+function MetricCard({ title, value, bgColor, icon, breakdown }) {
+    const platformIcons = {
+        imessage: '💬',
+        whatsapp: '📱',
+        discord: '🎮',
+        slack: '💼'
+    };
+
     return (
         <div className={`${bgColor} rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow`}>
             <div className="flex items-center justify-between mb-2">
@@ -146,6 +157,17 @@ function MetricCard({ title, value, bgColor, icon }) {
                 <span className="text-2xl">{icon}</span>
             </div>
             <p className="font-black text-3xl text-gray-900">{value || '-'}</p>
+            {breakdown && (
+                <div className="mt-3 pt-3 border-t border-black/10 grid grid-cols-2 gap-1">
+                    {Object.entries(breakdown).map(([platform, count]) => (
+                        <div key={platform} className="flex items-center gap-1 text-sm text-gray-700">
+                            <span>{platformIcons[platform] || '•'}</span>
+                            <span className="capitalize">{platform}</span>
+                            <span className="font-bold ml-auto">{count}</span>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }
